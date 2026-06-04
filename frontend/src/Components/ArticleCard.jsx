@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useAuthStore from '../store/authStore';
 import Button from './Button';
 
-const ArticleCard = ({ item, onUpdate, onDelete, onAddStock, onRemoveStock }) => {
+const ArticleCard = ({ item, onUpdate, onDelete, onAddStock, onRemoveStock, onViewHistory }) => {
   const { user } = useAuthStore();
   const [showStockModal, setShowStockModal] = useState(false);
   const [stockQuantity, setStockQuantity] = useState(1);
@@ -123,6 +123,14 @@ const ArticleCard = ({ item, onUpdate, onDelete, onAddStock, onRemoveStock }) =>
                 <Button variant="danger" onClick={() => onDelete(item._id)} className="flex-1 text-sm">
                   🗑️ Supprimer
                 </Button>
+                <Button 
+                    variant="info" 
+                    onClick={() => onViewHistory(item)}
+                    className="flex-1 text-sm bg-purple-600 hover:bg-purple-700 text-white"
+                  >
+                    📜 Historique
+                </Button>
+                
               </>
             )}
             
@@ -148,6 +156,7 @@ const ArticleCard = ({ item, onUpdate, onDelete, onAddStock, onRemoveStock }) =>
             >
               ➖ Retirer
             </Button>
+            
           </div>
         )}
       </div>

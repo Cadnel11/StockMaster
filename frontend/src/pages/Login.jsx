@@ -31,7 +31,7 @@ const Login = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@stockmaster.com"
+            placeholder="jean@exemple.com"
             required
           />
           

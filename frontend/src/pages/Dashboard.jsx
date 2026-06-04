@@ -2,13 +2,28 @@ import { useEffect, useState } from 'react';
 import useItemStore from '../store/itemStore';
 import useAuthStore from '../store/authStore';
 import ArticleCard from '../components/ArticleCard';
+import HistoryModal from '../components/HistoryModal';
 import Button from '../components/Button';
 import Alert from '../components/Alert';
 
 const Dashboard = () => {
-  const { items, loading, error, fetchItems, createItem, updateItem, deleteItem, addStock, removeStock, clearError } = useItemStore();
+  const { 
+    items, 
+    loading, 
+    error, 
+    fetchItems, 
+    createItem, 
+    updateItem, 
+    deleteItem, 
+    addStock, 
+    removeStock,
+    getItemHistory,
+    clearError 
+  } = useItemStore();
   const { user } = useAuthStore();
   const [showForm, setShowForm] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [filter, setFilter] = useState('');
   const [formData, setFormData] = useState({
     name: '',
@@ -30,6 +45,11 @@ const Dashboard = () => {
       setShowForm(false);
       setFormData({ name: '', quantity: 0, price: 0, category: '' });
     }
+  };
+
+  const handleViewHistory = (item) => {
+    setSelectedItem(item);
+    setShowHistoryModal(true);
   };
 
   const filteredItems = items.filter(item =>
@@ -114,6 +134,7 @@ const Dashboard = () => {
               onDelete={deleteItem}
               onAddStock={addStock}
               onRemoveStock={removeStock}
+              onViewHistory={handleViewHistory}
             />
           ))}
         </div>
@@ -176,6 +197,19 @@ const Dashboard = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Modal d'historique */}
+      {showHistoryModal && (
+        <HistoryModal
+          isOpen={showHistoryModal}
+          onClose={() => {
+            setShowHistoryModal(false);
+            setSelectedItem(null);
+          }}
+          item={selectedItem}
+          fetchHistory={getItemHistory}
+        />
       )}
     </div>
   );

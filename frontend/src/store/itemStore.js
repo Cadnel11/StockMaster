@@ -127,6 +127,24 @@ const itemStore = (set) => ({
     }
   },
 
+  // Ajoutez cette fonction dans itemStore (src/store/itemStore.js)
+
+// Récupérer l'historique d'un article
+getItemHistory: async (id) => {
+  set({ loading: true, error: null });
+  try {
+    const response = await api.get(`/items/${id}/history`);
+    set({ loading: false });
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    set({ 
+      error: error.response?.data?.message || 'Erreur lors du chargement de l\'historique', 
+      loading: false 
+    });
+    return { success: false, error: error.response?.data?.message };
+  }
+},
+
   clearError: () => set({ error: null }),
 });
 
